@@ -14,10 +14,10 @@
 ## Features 
 
  ## 1. Add container with some details 
-    
+
+<img src="./screenshots/demoV1.mp4">    
+
 ### You can add slot number ,arrived date, release due date and color for the container
-[demoV1.mp4](screenshots%2FdemoV1.mp4)
-<img src="./screenshots/demoV1.mp4">
 
 ## This project is designed to streamline container logistics, enabling logistics companies and shipping entities to manage their cargo effectively. The application's user-friendly interface simplifies the complexities of container tracking and organization, making it an ideal solution for optimizing logistical workflows
 
