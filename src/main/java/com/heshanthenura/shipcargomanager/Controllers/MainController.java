@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -21,10 +21,45 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class MainController implements Initializable {
 
     public static IntegerProperty slotNumber = new SimpleIntegerProperty(1);
+
+
+
+    Logger logger = Logger.getLogger("info");
+
+    @FXML
+    private VBox addContainerForm;
+
+    @FXML
+    private Button addContainerFormCancelBtn;
+
+    @FXML
+    private DatePicker arrivedDatePicker;
+
+    @FXML
+    private ColorPicker colorPicker;
+
+    @FXML
+    private VBox containerVbox;
+
+    @FXML
+    private Text dataAdLbl;
+
+    @FXML
+    private Text dataIdLbl;
+
+    @FXML
+    private Text dataRDDLbl;
+
+    @FXML
+    private Text dataRDLbl;
+
+    @FXML
+    private Text dataSlotLbl;
 
     @FXML
     private AnchorPane mainPane;
@@ -36,25 +71,16 @@ public class MainController implements Initializable {
     private Button previousBtn;
 
     @FXML
+    private DatePicker releaseDueDatePicker;
+
+    @FXML
+    private DatePicker releasedDatePicker;
+
+    @FXML
     private Text slotNumberLbl;
 
     @FXML
-    private VBox containerVbox;
-
-    @FXML
-    public Text dataAdLbl;
-
-    @FXML
-    public Text dataIdLbl;
-
-    @FXML
-    public Text dataRDDLbl;
-
-    @FXML
-    public Text dataRDLbl;
-
-    @FXML
-    public Text dataSlotLbl;
+    private Spinner<Integer> slotNumberPicker;
 
     @FXML
     void nextBtnClick(MouseEvent event) {
@@ -72,13 +98,31 @@ public class MainController implements Initializable {
 
     @FXML
     void addContainerBtnClick(MouseEvent event) {
-        Rectangle container = new Rectangle();
-        container.setWidth(400);
-        container.setHeight(200);
-        ObservableList<Node> children = containerVbox.getChildren();
-        int indexToAdd = 0;
-        children.add(indexToAdd, container);
+        addContainerForm.setVisible(true);
+        addContainerForm.setDisable(false);
     }
+
+    @FXML
+    void addContainerFormCancelBtnClick(MouseEvent event) {
+        addContainerForm.setVisible(false);
+        addContainerForm.setDisable(true);
+
+    }
+
+    @FXML
+    void addContainerFormAddBtnClick(MouseEvent event) {
+//        logger.info(String.valueOf(slotNumberPicker.getValue()));
+//        logger.info(arrivedDatePicker.getValue().toString());
+//        logger.info(releasedDatePicker.getValue().toString());
+//        logger.info(releaseDueDatePicker.getValue().toString());
+//        logger.info(colorPicker.getValue().toString());
+        new DatabaseServices().addContainer(slotNumberPicker.getValue(),arrivedDatePicker.getValue(),releaseDueDatePicker.getValue(),null, String.valueOf(colorPicker.getValue()));
+        addContainerForm.setVisible(false);
+        addContainerForm.setDisable(true);
+        new Services().addToContainerHolder(containerVbox, slotNumber.get());
+
+    }
+
 
     @FXML
     void addSlotBtnClick(MouseEvent event) {
@@ -87,11 +131,15 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         slotNumberLbl.textProperty().bind(slotNumber.asString());
         new DatabaseServices().initTables();
         new Services().addToContainerHolder(containerVbox, slotNumber.get());
-        Platform.runLater(() -> {
 
+
+        Platform.runLater(() -> {
+            SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1); // Change the min, max, and initial value as needed
+            slotNumberPicker.setValueFactory(valueFactory);
             new DataLables( ).initLables(dataIdLbl,dataSlotLbl,dataAdLbl,dataRDDLbl,dataRDLbl);
         });
     }

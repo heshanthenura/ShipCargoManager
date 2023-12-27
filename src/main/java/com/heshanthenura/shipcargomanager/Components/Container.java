@@ -17,13 +17,15 @@ public class Container {
     private LocalDate arrivedDate;
     private LocalDate releaseDueDate;
     private LocalDate releasedDate;
+    private Color color;
 
-    public Container(int id, int slot, LocalDate arrivedDate, LocalDate releaseDueDate, LocalDate releasedDate) {
+    public Container(int id, int slot, LocalDate arrivedDate, LocalDate releaseDueDate, LocalDate releasedDate,Color color) {
         this.id = id;
         this.slot = slot;
         this.arrivedDate = arrivedDate;
         this.releaseDueDate = releaseDueDate;
         this.releasedDate = releasedDate;
+        this.color = color;
 
         container.setOnMouseClicked(e -> {
             String releasedDateString = (releasedDate != null) ? releasedDate.toString() : "N/A";
@@ -79,6 +81,7 @@ public class Container {
         container.setFill(Color.GREEN);
         container.setStroke(Color.BLACK);
         container.setStrokeWidth(1); // Change the stroke width as needed
+        container.setFill(color);
         return container;
     }
 

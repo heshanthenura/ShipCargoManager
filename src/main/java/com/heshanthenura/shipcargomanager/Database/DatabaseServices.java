@@ -1,6 +1,7 @@
 package com.heshanthenura.shipcargomanager.Database;
 
 import com.heshanthenura.shipcargomanager.Components.Container;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.sql.*;
@@ -31,10 +32,11 @@ public class DatabaseServices {
                         Date arrivedDate = resultSet.getDate("arrived_date");
                         Date releaseDueDate = resultSet.getDate("release_due_date");
                         Date releasedDate = resultSet.getDate("released_date");
+                        Color color = Color.valueOf(resultSet.getString("color"));
                         LocalDate arrivedLocalDate = (arrivedDate != null) ? arrivedDate.toLocalDate() : null;
                         LocalDate releaseDueLocalDate = (releaseDueDate != null) ? releaseDueDate.toLocalDate() : null;
                         LocalDate releasedLocalDate = (releasedDate != null) ? releasedDate.toLocalDate() : null;
-                        Container container = new Container(id, slot, arrivedLocalDate, releaseDueLocalDate, releasedLocalDate);
+                        Container container = new Container(id, slot, arrivedLocalDate, releaseDueLocalDate, releasedLocalDate,color);
                         containers.add(container);
                     }
                 }
@@ -45,6 +47,32 @@ public class DatabaseServices {
 
         return containers;
     }
+
+    public void addContainer(int slotNumber, LocalDate arrivedDate, LocalDate releaseDueDate, LocalDate releasedDate, String color) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            if (connection != null) {
+                String insertQuery = "INSERT INTO container_table (slot_number, arrived_date, release_due_date, released_date, color) VALUES (?, ?, ?, ?, ?)";
+
+                try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                    preparedStatement.setInt(1, slotNumber);
+                    preparedStatement.setDate(2, arrivedDate != null ? Date.valueOf(arrivedDate) : null);
+                    preparedStatement.setDate(3, releaseDueDate != null ? Date.valueOf(releaseDueDate) : null);
+                    preparedStatement.setDate(4, releasedDate != null ? Date.valueOf(releasedDate) : null);
+                    preparedStatement.setString(5, color); // Set the color
+
+                    int rowsAffected = preparedStatement.executeUpdate();
+                    if (rowsAffected > 0) {
+                        logger.info("Data inserted successfully into container_table!");
+                    } else {
+                        logger.warning("Failed to insert data into container_table!");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) {
         for (Container c : retrieveContainersBySlot(1)){
@@ -68,7 +96,8 @@ public class DatabaseServices {
                         + "slot_number INT,"
                         + "arrived_date DATE,"
                         + "release_due_date DATE,"
-                        + "released_date DATE"
+                        + "released_date DATE,"
+                        + "color VARCHAR(50)" // New column
                         + ")";
 
                 statement.executeUpdate(createContainerTableQuery);
@@ -78,6 +107,7 @@ public class DatabaseServices {
             e.printStackTrace();
         }
     }
+
 
     private void createSlotTable() {
         try (Connection connection = DatabaseConnection.getConnection()) {
