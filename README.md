@@ -10,7 +10,9 @@
 - ### Identification & Description: Assign unique IDs to containers, along with brief descriptions for quick reference.
 - ### Intuitive User Interface: Utilizes JavaFX to deliver an intuitive and visually appealing user experience.
 - ### Search & Retrieval: Facilitates quick search functionalities to locate containers within the system effortlessly.
- 
+
+## Available for [Windows](https://github.com/heshanthenura/ShipCargoManager/releases/tag/win-v1.0) [Linux](https://github.com/heshanthenura/ShipCargoManager/releases/tag/linux-v1.0) [MacOS](https://github.com/heshanthenura/ShipCargoManager/releases/tag/macOS-v1.0) 
+
 ## Features 
 
  ## 1. Add container with some details 
