@@ -73,6 +73,26 @@ public class DatabaseServices {
         }
     }
 
+    public void deleteContainerById(int containerId) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            if (connection != null) {
+                String deleteQuery = "DELETE FROM container_table WHERE id = ?";
+
+                try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+                    preparedStatement.setInt(1, containerId);
+
+                    int rowsAffected = preparedStatement.executeUpdate();
+                    if (rowsAffected > 0) {
+                        logger.info("Container with ID " + containerId + " deleted successfully from container_table!");
+                    } else {
+                        logger.warning("No container found with ID " + containerId + " in container_table!");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         for (Container c : retrieveContainersBySlot(1)){

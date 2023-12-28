@@ -52,6 +52,16 @@ jlink {
   }
 }
 
+task customFatJar(type: Jar) {
+  manifest {
+    attributes 'Main-Class': 'com.heshanthenura.shipcargomanager.Launcher'
+  }
+  archiveBaseName = 'CargoManagerJAR'
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+  with jar
+}
+
 jlinkZip {
   group = 'distribution'
 }

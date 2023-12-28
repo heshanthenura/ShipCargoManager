@@ -1,14 +1,21 @@
 package com.heshanthenura.shipcargomanager.Components;
 
 import com.heshanthenura.shipcargomanager.Controllers.MainController;
+import com.heshanthenura.shipcargomanager.Database.DatabaseServices;
 import com.heshanthenura.shipcargomanager.Services.DataLables;
+import com.heshanthenura.shipcargomanager.Services.Services;
 import javafx.application.Platform;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class Container {
+
+    Logger logger = Logger.getLogger("info");
 
     private final Rectangle container = new Rectangle();
 
@@ -30,7 +37,13 @@ public class Container {
         container.setOnMouseClicked(e -> {
             String releasedDateString = (releasedDate != null) ? releasedDate.toString() : "N/A";
             new DataLables().setLables(id, slot, arrivedDate.toString(), releaseDueDate.toString(), releasedDateString);
+            if (e.getButton() == MouseButton.SECONDARY) {
+                new DatabaseServices().deleteContainerById(id);
+                new Services().addToContainerHolder((VBox) container.getParent(), slot);
+            }
         });
+
+
 
 
     }
