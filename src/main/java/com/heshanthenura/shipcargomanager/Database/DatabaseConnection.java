@@ -1,12 +1,13 @@
 package com.heshanthenura.shipcargomanager.Database;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class DatabaseConnection {
-    private static final String DB_URL = "jdbc:h2:./src/main/resources/data.db";
+    private static final String DB_URL = "jdbc:h2:"+System.getProperty("user.dir")+ File.separator+"data.db";
     private static final String USER = "admin";
     private static final String PASSWORD = "admin";
     static Logger logger = Logger.getLogger("logger");

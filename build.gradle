@@ -26,7 +26,7 @@ tasks.withType(JavaCompile) {
 
 application {
   mainModule = 'com.heshanthenura.shipcargomanager'
-  mainClass = 'com.heshanthenura.shipcargomanager.HelloApplication'
+  mainClass = 'com.heshanthenura.shipcargomanager.Launcher'
 }
 
 javafx {
